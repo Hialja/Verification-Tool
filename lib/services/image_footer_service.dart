@@ -7,6 +7,7 @@ Future<File> addFooterToImage(
     File file,
     String companyName,
     String agentName,
+    String? address,
     double lat,
     double lng,
     Uint8List? mapBytes,
@@ -19,31 +20,34 @@ Future<File> addFooterToImage(
     throw Exception("Failed to decode image");
   }
 
-  final timestamp = DateFormat("dd MMM yyyy  HH:mm").format(DateTime.now());
+  final timestamp =
+  DateFormat("dd MMM yyyy  HH:mm").format(DateTime.now());
 
-  const footerHeight = 320;
+  const footerHeight = 500;
 
   final newImage = img.Image(
     width: original.width,
     height: original.height + footerHeight,
   );
 
-  // copy original photo
   img.compositeImage(newImage, original);
 
-  // footer background
   img.fillRect(
     newImage,
     x1: 0,
     y1: original.height,
     x2: original.width,
     y2: original.height + footerHeight,
-    color: img.ColorRgba8(0, 0, 0, 200),
+    color: img.ColorRgba8(0, 0, 0, 210),
   );
 
-  int startY = original.height + 40;
+  final startY = original.height + 40;
 
-  // COMPANY
+  final shortAddress = address != null && address.length > 60
+      ? address.substring(0, 60)
+      : address;
+
+  /// COMPANY
   img.drawString(
     newImage,
     "COMPANY: $companyName",
@@ -53,52 +57,84 @@ Future<File> addFooterToImage(
     color: img.ColorRgb8(255, 255, 255),
   );
 
-  // AGENT
+  /// AGENT
   img.drawString(
     newImage,
     "AGENT: $agentName",
     x: 40,
-    y: startY + 60,
+    y: startY + 70,
     font: img.arial24,
     color: img.ColorRgb8(255, 255, 255),
   );
 
-  // GPS
+  /// ADDRESS
+  if (shortAddress != null) {
+    img.drawString(
+      newImage,
+      "ADDRESS: $shortAddress",
+      x: 40,
+      y: startY + 110,
+      font: img.arial24,
+      color: img.ColorRgb8(255, 255, 255),
+    );
+  }
+
+  /// GPS
   img.drawString(
     newImage,
-    "GPS: ${lat.toStringAsFixed(6)} , ${lng.toStringAsFixed(6)}",
+    "LAT: ${lat.toStringAsFixed(6)}",
     x: 40,
-    y: startY + 110,
+    y: startY + 150,
     font: img.arial24,
     color: img.ColorRgb8(255, 255, 255),
   );
 
-  // TIME
+  img.drawString(
+    newImage,
+    "LNG: ${lng.toStringAsFixed(6)}",
+    x: 40,
+    y: startY + 180,
+    font: img.arial24,
+    color: img.ColorRgb8(255, 255, 255),
+  );
+
+  /// TIME
   img.drawString(
     newImage,
     "TIME: $timestamp",
     x: 40,
-    y: startY + 160,
+    y: startY + 220,
     font: img.arial24,
     color: img.ColorRgb8(255, 255, 255),
   );
 
-  // MAP SECTION
+  /// separator
+  img.drawLine(
+    newImage,
+    x1: 40,
+    y1: startY + 260,
+    x2: original.width - 40,
+    y2: startY + 260,
+    color: img.ColorRgb8(255, 255, 255),
+  );
+
+  /// MAP
   if (mapBytes != null) {
 
     final mapImage = img.decodeImage(mapBytes);
 
     if (mapImage != null) {
 
+      final mapWidth = original.width ~/ 2;
+
       final resizedMap = img.copyResize(
         mapImage,
-        width: 250,
+        width: mapWidth,
       );
 
-      final mapX = original.width - resizedMap.width - 30;
-      final mapY = original.height + 40;
+      final mapX = ((original.width - resizedMap.width) / 2).toInt();
+      final mapY = startY + 280;
 
-      // draw map
       img.compositeImage(
         newImage,
         resizedMap,
@@ -106,7 +142,6 @@ Future<File> addFooterToImage(
         dstY: mapY,
       );
 
-      // map border
       img.drawRect(
         newImage,
         x1: mapX - 2,
@@ -118,11 +153,12 @@ Future<File> addFooterToImage(
     }
   }
 
-  final newFile = File(
-    file.path.replaceAll(".jpg", "_verified.jpg"),
-  );
+  final newFile =
+  File(file.path.replaceAll(".jpg", "_verified.jpg"));
 
-  await newFile.writeAsBytes(img.encodeJpg(newImage));
+  await newFile.writeAsBytes(
+    img.encodeJpg(newImage, quality: 90),
+  );
 
   return newFile;
 }

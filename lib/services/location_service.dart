@@ -1,9 +1,11 @@
 import 'package:geolocator/geolocator.dart';
 
 Future<Position> getLocation() async {
+
   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
   if (!serviceEnabled) {
-    throw Exception('Location services disabled');
+    throw Exception("Location services are disabled");
   }
 
   LocationPermission permission = await Geolocator.checkPermission();
@@ -12,5 +14,20 @@ Future<Position> getLocation() async {
     permission = await Geolocator.requestPermission();
   }
 
-  return await Geolocator.getCurrentPosition();
+  if (permission == LocationPermission.denied) {
+    throw Exception("Location permission denied");
+  }
+
+  if (permission == LocationPermission.deniedForever) {
+    throw Exception(
+      "Location permission permanently denied. Please enable it in settings.",
+    );
+  }
+
+  /// High accuracy GPS fix
+  final position = await Geolocator.getCurrentPosition(
+    desiredAccuracy: LocationAccuracy.best,
+  );
+
+  return position;
 }

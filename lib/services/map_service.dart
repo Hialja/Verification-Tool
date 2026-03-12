@@ -1,22 +1,20 @@
-
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
+import '../services/app_config.dart';
 
 Future<Uint8List?> downloadMap(double lat, double lng) async {
 
-  const apiKey = "pk.3600b64910dcc10980627f85eafb7852";
-
   final url =
-      "https://maps.locationiq.com/v3/staticmap"
-      "?key=$apiKey"
-      "&center=$lat,$lng"
-      "&zoom=16"
-      "&size=1920x1080"
-      "&style=osm-bright"
-      "&markers=icon:large-red-cutout|$lat,$lng";
+      "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/"
+      "pin-s+ff0000($lng,$lat)/"
+      "$lng,$lat,17/800x600"
+      "?access_token=${AppConfig.mapboxToken}";
 
   try {
-    final response = await http.get(Uri.parse(url));
+
+    final response = await http
+        .get(Uri.parse(url))
+        .timeout(const Duration(seconds: 10));
 
     if (response.statusCode == 200) {
       return response.bodyBytes;

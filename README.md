@@ -2,132 +2,151 @@
 
 This document describes the field verification process performed by a field agent.
 
-The document covers the workflow from the moment a verification task is assigned to the agent until the evidence is sent back to the coordinator.
+The workflow starts when a verification task is assigned to the field agent and ends when the verification evidence is submitted to the coordinator.
 
-The process does not include the client request stage, which is handled separately by the coordinator.
+This document does not cover the client request stage, which is handled separately by the coordinator.
 
 2. Roles
    Coordinator
 
-The coordinator manages verification tasks and communicates with field agents.
+The Coordinator manages verification tasks and communicates with field agents.
 
-Responsibilities:
+Responsibilities
 
-receives verification tasks
+Receive verification tasks from clients
 
-sends tasks to field agents
+Assign tasks to field agents
 
-collects verification evidence
+Collect verification evidence
 
-communicates with clients
+Communicate with clients
 
-Example: Amer.
+Prepare verification reports
+
+Example: Amer
 
 Field Agent
 
-The field agent performs the physical verification at the company location.
+The Field Agent performs the physical verification at the company location.
 
-Responsibilities:
+Responsibilities
 
-travel to the company location
+Travel to the company location
 
-confirm employment information
+Confirm employment information
 
-collect evidence
+Collect verification evidence
 
-send verification results
+Send verification results to the coordinator
 
 3. Task Assignment
 
-The coordinator sends the verification task to a field agent.
+The coordinator assigns a verification task to a field agent.
 
-Current communication method:
+Current Communication Method
 
 WhatsApp
 
-Information usually sent:
+Information Usually Sent
 
-Employment certificate (Attestation de Travail)
+Employment Certificate (Attestation de Travail)
+
 Company name
+
 Company address (if available)
+
 Special instructions (optional)
+
 4. Field Verification
 
-The field agent visits the company location.
+The field agent travels to the company location.
 
 The agent attempts to:
 
-locate the company office
+Locate the company office
 
-meet a manager or HR representative
+Meet a manager or HR representative
 
-confirm the employment information
+Confirm the employment information
 
 5. Evidence Collection
 
-The agent collects verification evidence.
+The field agent collects verification evidence during the visit.
 
-Required evidence:
+Required Evidence
 
 Photos of the company location
+
 Signed employment certificate
+
 Company stamp on the document
+
 Manager contact number
 
-Optional evidence:
+Optional Evidence
 
 Agent selfie at the company location
+
 GPS-stamped photos
 
-Tools used:
+Tools Used
 
 GPS Map Camera
+
 Smartphone camera
+
 6. Document Confirmation
 
-During the visit the manager or HR representative must:
+During the visit, the manager or HR representative must:
 
-sign the employment certificate
+Sign the employment certificate
 
-apply the company stamp
+Apply the company stamp
 
-sometimes write their contact number
+Sometimes write their contact number
 
-This confirms the employment verification.
+These actions confirm the employment verification.
 
 7. Evidence Submission
 
-After the visit the agent sends the collected evidence to the coordinator.
+After completing the visit, the field agent sends the collected evidence to the coordinator.
 
-Evidence sent:
+Evidence Sent
 
-Photos of the company
+Photos of the company location
+
 Signed and stamped employment certificate
+
 Additional notes (if necessary)
 
-Communication channel:
+Communication Channel
 
 WhatsApp
+
 8. Verification Completion
 
 Once the evidence is sent, the field agent's task is complete.
 
 The coordinator is responsible for:
 
-reviewing the evidence
+Reviewing the evidence
 
-preparing the final report
+Preparing the final report
 
-sending the result to the client
+Sending the result to the client
 
 9. Current Limitations
 
-The current process relies on WhatsApp communication.
+The current process relies on WhatsApp communication, which creates several operational limitations.
 
-Limitations include:
+Limitations
 
-Evidence scattered across chats
+Evidence scattered across chat conversations
+
 No structured verification records
+
 No centralized storage
+
 Difficult to search past verifications
+
 Manual report preparation
