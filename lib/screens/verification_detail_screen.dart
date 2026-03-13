@@ -19,24 +19,32 @@ class VerificationDetailScreen extends StatefulWidget {
 
 class _VerificationDetailScreenState extends State<VerificationDetailScreen> {
   List<String> photos = [];
+  bool generatingReport = false;
 
   @override
   void initState() {
     super.initState();
     photos = List<String>.from(widget.verification.photos);
-
   }
 
   Future<void> addPhotos(List<String> newPhotos) async {
-    photos.addAll(newPhotos);
+    photos = {...photos, ...newPhotos}.toList();
 
     widget.verification.photos = photos;
     await widget.verification.save();
+
+    if (!mounted) return;
 
     setState(() {});
   }
 
   Future<void> generateReport() async {
+    if (photos.isEmpty) return;
+
+    setState(() {
+      generatingReport = true;
+    });
+
     final v = widget.verification;
 
     final file = await generateVerificationReport(
@@ -44,12 +52,22 @@ class _VerificationDetailScreenState extends State<VerificationDetailScreen> {
       companyName: v.companyName,
       agentName: AppConfig.agentName,
       photos: photos,
+      address: v.companyAddress,
+      managerName: v.respName,
+      managerPhone: v.contactNumber,
+      photoCount: photos.length,
     );
 
     await Share.shareXFiles(
       [XFile(file.path)],
       text: "Verification Report - ${v.employeeName}",
     );
+
+    if (!mounted) return;
+
+    setState(() {
+      generatingReport = false;
+    });
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Report generated")),
@@ -86,7 +104,7 @@ class _VerificationDetailScreenState extends State<VerificationDetailScreen> {
               MaterialPageRoute(
                 builder: (_) => PhotoGalleryScreen(
                   photos: photos,
-                  initialInedx: index,
+                  initialIndex: index,
 
                 ),
               ),
@@ -99,6 +117,7 @@ class _VerificationDetailScreenState extends State<VerificationDetailScreen> {
               child: Image.file(
                 File(photos[index]),
                 fit: BoxFit.cover,
+                cacheWidth: 600,
               ),
             ),
           ),
@@ -209,7 +228,9 @@ class _VerificationDetailScreenState extends State<VerificationDetailScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            onPressed: generateReport,
+            onPressed: photos.isEmpty || generatingReport
+                ? null
+                : generateReport,
           ),
         ),
       ],
@@ -236,7 +257,7 @@ class _VerificationDetailScreenState extends State<VerificationDetailScreen> {
 
             Align(
               alignment: Alignment.centerLeft,
-              child: buildSectionTitle("Evidence Photos"),
+              child: buildSectionTitle("Evidence Photos (${photos.length})"),
             ),
 
             buildPhotoGrid(),

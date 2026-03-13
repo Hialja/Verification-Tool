@@ -3,12 +3,12 @@ import 'dart:io';
 
 class PhotoGalleryScreen extends StatefulWidget {
   final List<String> photos;
-  final int initialInedx;
+  final int initialIndex;
 
   const PhotoGalleryScreen({
     super.key,
     required this.photos,
-    required this.initialInedx,
+    required this.initialIndex,
   });
 
   @override
@@ -23,8 +23,8 @@ class _PhotoGalleryScreenState extends State<PhotoGalleryScreen> {
   @override
   void initState(){
     super.initState();
-    currentIndex = widget.initialInedx;
-    controller = PageController(initialPage: widget.initialInedx);
+    currentIndex = widget.initialIndex;
+    controller = PageController(initialPage: widget.initialIndex);
   }
 
   @override

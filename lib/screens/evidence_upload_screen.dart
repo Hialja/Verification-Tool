@@ -8,7 +8,6 @@ import '../services/address_service.dart';
 import '../services/map_service.dart';
 import '../services/storage_service.dart';
 import '../services/app_config.dart';
-import 'dart:typed_data';
 
 class EvidenceUploadScreen extends StatefulWidget {
   final Verification verification;
@@ -23,61 +22,68 @@ class _EvidenceUploadScreenState extends State<EvidenceUploadScreen> {
   final ImagePicker picker = ImagePicker();
 
   List<String> photos = [];
-  Uint8List? verificationMap;
-
-  @override
-  void initState() {
-    super.initState();
-    loadMap();
-  }
-
-  Future<void> loadMap() async {
-    final location = await getLocation();
-    verificationMap = await downloadMap(location.latitude, location.longitude);
-  }
+  bool isProcessing = false;
 
   Future<void> _processImage(XFile? image) async {
     if (image == null) return;
 
-    final photoFile = File(image.path);
+    try {
+      setState(() {
+        isProcessing = true;
+      });
 
-    /// Get GPS
-    final location = await getLocation();
+      final photoFile = File(image.path);
 
-    /// Download map for this exact location
-    final map = await downloadMap(
-      location.latitude,
-      location.longitude,
-    );
+      /// Get GPS
+      final location = await getLocation();
 
-    /// Get human readable address
-    final address = await getAddress(
-      location.latitude,
-      location.longitude,
-    );
+      /// Download map for THIS photo location
+      final map = await downloadMap(
+        location.latitude,
+        location.longitude,
+      );
 
-    /// Add footer
-    final newImage = await addFooterToImage(
-      photoFile,
-      widget.verification.companyName,
-      AppConfig.agentName,
-      address,
-      location.latitude,
-      location.longitude,
-      map,
-    );
+      /// Get human readable address
+      final address = await getAddress(
+        location.latitude,
+        location.longitude,
+      );
 
-    /// Save processed image
-    final savedImage = await saveVerificationPhoto(
-      newImage,
-      widget.verification.id,
-    );
+      /// Add footer
+      final newImage = await addFooterToImage(
+        photoFile,
+        widget.verification.companyName,
+        AppConfig.agentName,
+        address,
+        location.latitude,
+        location.longitude,
+        map,
+      );
 
-    if (!mounted) return;
+      /// Save processed image
+      final savedImage = await saveVerificationPhoto(
+        newImage,
+        widget.verification.id,
+      );
 
-    setState(() {
-      photos.add(savedImage.path);
-    });
+      if (!mounted) return;
+
+      setState(() {
+        photos.add(savedImage.path);
+      });
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Failed to process photo")),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          isProcessing = false;
+        });
+      }
+    }
   }
 
   Future<void> takePhoto() async {
@@ -90,23 +96,11 @@ class _EvidenceUploadScreenState extends State<EvidenceUploadScreen> {
     await _processImage(image);
   }
 
-  Future<void> pickFromGallery() async {
-    final XFile? image = await picker.pickImage(
-      source: ImageSource.gallery,
-      maxWidth: 1200,
-      imageQuality: 85,
-    );
-
-    await _processImage(image);
-  }
-
   Widget buildPhotoTile(int index) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
       child: Stack(
         children: [
-
-          /// IMAGE (tap to preview)
           Positioned.fill(
             child: GestureDetector(
               onTap: () {
@@ -131,11 +125,11 @@ class _EvidenceUploadScreenState extends State<EvidenceUploadScreen> {
               child: Image.file(
                 File(photos[index]),
                 fit: BoxFit.cover,
+                cacheWidth: 600,
               ),
             ),
           ),
 
-          /// DELETE BUTTON
           Positioned(
             top: 6,
             right: 6,
@@ -207,7 +201,6 @@ class _EvidenceUploadScreenState extends State<EvidenceUploadScreen> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            /// HEADER
             const Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -218,7 +211,6 @@ class _EvidenceUploadScreenState extends State<EvidenceUploadScreen> {
 
             const SizedBox(height: 10),
 
-            /// CAMERA + GALLERY
             Card(
               elevation: 1,
               shape: RoundedRectangleBorder(
@@ -227,27 +219,25 @@ class _EvidenceUploadScreenState extends State<EvidenceUploadScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton.icon(
-                      onPressed: takePhoto,
+                      onPressed: isProcessing ? null : takePhoto,
                       icon: const Icon(Icons.camera_alt),
                       label: const Text("Camera"),
-                    ),
-
-                    ElevatedButton.icon(
-                      onPressed: pickFromGallery,
-                      icon: const Icon(Icons.photo_library),
-                      label: const Text("Gallery"),
                     ),
                   ],
                 ),
               ),
             ),
 
+            if (isProcessing) ...[
+              const SizedBox(height: 15),
+              const CircularProgressIndicator(),
+            ],
+
             const SizedBox(height: 15),
 
-            /// PHOTO GRID
             Expanded(
               child: GridView.builder(
                 itemCount: photos.length,

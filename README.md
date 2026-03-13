@@ -1,152 +1,143 @@
-1. Scope
+# VerifyField – Field Employment Verification Tool
 
-This document describes the field verification process performed by a field agent.
+## 1. Overview
 
-The workflow starts when a verification task is assigned to the field agent and ends when the verification evidence is submitted to the coordinator.
+VerifyField is a mobile application designed to improve and structure the employment verification process performed by field agents.
 
-This document does not cover the client request stage, which is handled separately by the coordinator.
+The application replaces the traditional WhatsApp-based workflow with a structured system that allows field agents to collect verification evidence directly from the company location and submit it digitally to the coordinator.
 
-2. Roles
-   Coordinator
+The process begins when a verification task is assigned to a field agent and ends when the collected evidence is submitted for review.
 
-The Coordinator manages verification tasks and communicates with field agents.
+---
 
-Responsibilities
+## 2. Roles
 
-Receive verification tasks from clients
+### Coordinator
 
-Assign tasks to field agents
+The Coordinator manages verification requests and supervises field operations.
 
-Collect verification evidence
+Responsibilities:
 
-Communicate with clients
+- Receive verification requests from clients
+- Assign verification tasks to field agents
+- Review submitted evidence
+- Communicate with clients
+- Prepare final verification reports
 
-Prepare verification reports
+Example coordinator: **Amer**
 
-Example: Amer
+---
 
-Field Agent
+### Field Agent
 
-The Field Agent performs the physical verification at the company location.
+The Field Agent performs the physical verification at the company location using the mobile application.
 
-Responsibilities
+Responsibilities:
 
-Travel to the company location
+- Travel to the company location
+- Locate the company office
+- Meet a manager or HR representative
+- Confirm employment information
+- Collect verification evidence using the app
+- Submit verification results
 
-Confirm employment information
+---
 
-Collect verification evidence
+## 3. Task Assignment
 
-Send verification results to the coordinator
+The Coordinator assigns a verification task to a field agent.
 
-3. Task Assignment
+The task may include:
 
-The coordinator assigns a verification task to a field agent.
+- Employment Certificate (Attestation de Travail)
+- Company name
+- Company address (if available)
+- Special instructions (optional)
 
-Current Communication Method
+Previously, tasks were shared via **WhatsApp**.  
+VerifyField replaces this with a **structured task inside the application**.
 
-WhatsApp
+---
 
-Information Usually Sent
+## 4. Field Verification Process
 
-Employment Certificate (Attestation de Travail)
+The field agent travels to the company location and attempts to:
 
-Company name
+- Locate the company office
+- Identify a manager or HR representative
+- Confirm that the employee works at the company
 
-Company address (if available)
+---
 
-Special instructions (optional)
+## 5. Evidence Collection
 
-4. Field Verification
+During the visit, the field agent collects verification evidence using the mobile application.
 
-The field agent travels to the company location.
+### Required Evidence
 
-The agent attempts to:
+- GPS stamped Photos of the company location
+- Signed employment certificate
+- Company stamp on the document
+- Manager contact number
 
-Locate the company office
+### Optional Evidence
 
-Meet a manager or HR representative
+- Agent selfie at the company location
 
-Confirm the employment information
 
-5. Evidence Collection
+The application may capture **GPS coordinates** to confirm the visit location.
 
-The field agent collects verification evidence during the visit.
+---
 
-Required Evidence
+## 6. Document Confirmation
 
-Photos of the company location
+To confirm the verification, the manager or HR representative must:
 
-Signed employment certificate
+- Sign the employment certificate
+- Apply the company stamp
+- Optionally provide their contact number
 
-Company stamp on the document
+These actions confirm that the employment information is valid.
 
-Manager contact number
+---
 
-Optional Evidence
+## 7. Evidence Submission
 
-Agent selfie at the company location
+After completing the visit, the field agent submits the verification evidence through the application.
 
-GPS-stamped photos
+Submitted information may include:
 
-Tools Used
+- Photos of the company location
+- Signed and stamped employment certificate
+- GPS location coordinates
+- Additional notes
 
-GPS Map Camera
+The evidence is sent to the **Coordinator for review**.
 
-Smartphone camera
+---
 
-6. Document Confirmation
+## 8. Verification Completion
 
-During the visit, the manager or HR representative must:
+Once the evidence is submitted, the field agent’s task is complete.
 
-Sign the employment certificate
+The Coordinator is responsible for:
 
-Apply the company stamp
+- Reviewing the collected evidence
+- Preparing the final verification report
+- Sending the result to the client
 
-Sometimes write their contact number
+---
 
-These actions confirm the employment verification.
+## 9. Problems with the Current Manual Process
 
-7. Evidence Submission
+Before VerifyField, the verification process relied heavily on **WhatsApp communication**, which created operational issues.
 
-After completing the visit, the field agent sends the collected evidence to the coordinator.
+### Limitations
 
-Evidence Sent
+- Evidence scattered across chat conversations
+- No structured verification records
+- No centralized storage
+- Difficult to search past verifications
+- Manual report preparation
 
-Photos of the company location
-
-Signed and stamped employment certificate
-
-Additional notes (if necessary)
-
-Communication Channel
-
-WhatsApp
-
-8. Verification Completion
-
-Once the evidence is sent, the field agent's task is complete.
-
-The coordinator is responsible for:
-
-Reviewing the evidence
-
-Preparing the final report
-
-Sending the result to the client
-
-9. Current Limitations
-
-The current process relies on WhatsApp communication, which creates several operational limitations.
-
-Limitations
-
-Evidence scattered across chat conversations
-
-No structured verification records
-
-No centralized storage
-
-Difficult to search past verifications
-
-Manual report preparation
+VerifyField aims to solve these problems by providing a **structured digital verification workflow**.
